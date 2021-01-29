@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import Checkbox from "../../components/Checkbox/Checkbox";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
@@ -79,12 +80,11 @@ const Subscribe = () => {
     termsCheckbox: false,
   });
 
-  const [emailError, setEmailError] = useState(undefined);
-  const [termsError, setTermsError] = useState(undefined);
+  const [emailError, setEmailError] = useState();
+  const [termsError, setTermsError] = useState();
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
-    const isCheckbox = e.target.hasOwnProperty("checked");
     setValues({
       ...values,
       [name]: type !== "checkbox" ? value : checked,
@@ -115,7 +115,25 @@ const Subscribe = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e);
+
+    let formData = new FormData();
+    formData.append("email", values.email);
+    formData.append("timeStamp", e.timeStamp);
+
+    axios({
+      method: "post",
+      url: "/api/contacts.php",
+      data: formData,
+      config: { headers: { "Content-Type": "multipart/form-data" } },
+    })
+      .then(function (response) {
+        //handle success
+        console.log(response);
+      })
+      .catch(function (response) {
+        //handle error
+        console.log(response);
+      });
   };
 
   return (

@@ -1,11 +1,17 @@
-import Header from "../../components/Header/Header";
-import Subscribe from "../Subscribe/Subscribe";
-
+import Home from "../../pages/home";
+import Subscribers from "../../pages/subscribers";
+import { Switch, Route } from "react-router-dom";
 const App = () => {
   return (
     <>
-      <Header />
-      <Subscribe />
+      <Switch>
+        <Route path="/subscribers">
+          <Subscribers />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
     </>
   );
 };
