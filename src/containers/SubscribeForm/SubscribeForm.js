@@ -43,6 +43,8 @@ const SubscribeForm = (props) => {
     }
     if (type === "checkbox" && checked === false) {
       setTermsError("You must accept the terms and conditions");
+    } else {
+      setTermsError(null);
     }
   };
 
@@ -94,6 +96,7 @@ const SubscribeForm = (props) => {
           placeholder="Type your email address here…"
           value={values.email}
           handleChange={handleChange}
+          disabled={!values.termsCheckbox || !values.email}
         />
         <ErrorMessage error={emailError} />
       </SInputWrapper>
