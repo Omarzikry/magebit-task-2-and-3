@@ -27,7 +27,8 @@ switch ($method) {
       break;
     case 'POST':
       $email = $_POST["email"];
-      $sql = "INSERT INTO contacts(email) values('$email')"; 
+      $timeStamp = $_POST["timeStamp"];
+      $sql = "INSERT INTO contacts(email,timeStamp) values('$email','$timeStamp')"; 
       break;
     case 'DELETE':
       $id = $_GET['del'];
