@@ -1,8 +1,8 @@
 <?php
 $host = "localhost"; 
-$user = "root"; 
-$password = ""; 
-$dbname = "reactdb"; 
+$user = "omarzikr_pineapple"; //root
+$password = "Oitfbsfyb"; 
+$dbname = "omarzikr_pineapple"; //reactdb
 $id = '';
 
 // CREATE TABLE `contacts` (`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,`email` varchar(100) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=latin1;

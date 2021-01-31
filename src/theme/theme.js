@@ -6,8 +6,9 @@ const theme = {
     black: "#131821",
     grey: "#6a707b",
     lightGrey: "#e3e3e4",
-    white: "#fff",
+    white: "#ffffff",
     red: "#DB2B39",
+    indianRed: "#DB5461",
 
     // social media colors
     facebookBlue: "#4267b2",

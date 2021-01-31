@@ -37,6 +37,8 @@ const SubscribeForm = (props) => {
       ...values,
       [name]: type !== "checkbox" ? value : checked,
     });
+
+    // validate inputs and set error messages
     if (type === "email") {
       setEmailError(validateEmail(value));
       return;
@@ -52,9 +54,10 @@ const SubscribeForm = (props) => {
     e.preventDefault();
 
     let formData = new FormData();
-    formData.append("email", values.email);
-    formData.append("timeStamp", e.timeStamp);
+    formData.append("email", values.email.toLowerCase().replace(/\s/g, ""));
+    formData.append("timeStamp", Date.now());
 
+    // using axios to post to php rest api contacts.php
     axios({
       method: "post",
       url: "/api/contacts.php",
@@ -64,7 +67,6 @@ const SubscribeForm = (props) => {
       .then(function (response) {
         //handle success
         setSubmitted(true);
-        console.log(response);
       })
       .catch(function (response) {
         //handle error
@@ -72,6 +74,7 @@ const SubscribeForm = (props) => {
       });
   };
 
+  // validate email function returning the error according to the type of the error
   const validateEmail = (email) => {
     const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
 
@@ -96,7 +99,12 @@ const SubscribeForm = (props) => {
           placeholder="Type your email address here…"
           value={values.email}
           handleChange={handleChange}
-          disabled={!values.termsCheckbox || !values.email}
+          disabled={
+            !values.termsCheckbox ||
+            !values.email ||
+            !!emailError ||
+            !!termsError
+          }
         />
         <ErrorMessage error={emailError} />
       </SInputWrapper>

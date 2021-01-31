@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 const SubscribersList = () => {
   const [contacts, setContacts] = useState([]);
+  const [emailDeleted, setEmailDeleted] = useState(1);
   const [isDeleting, setIsDeleting] = useState(false);
   const [dateAsc, setDateAsc] = useState(true);
   const [emailAsc, setEmailAsc] = useState(true);
@@ -9,61 +10,69 @@ const SubscribersList = () => {
   const [filteredContacts, setFilteredContacts] = useState();
 
   useEffect(() => {
+    // use axios to get contacts from php rest api
     axios.get("/api/contacts.php").then((response) => {
       setContacts(response.data);
       mapFilterButtons(response.data);
     });
-  }, [isDeleting]);
 
+    // add is deleting variable so use effect runs every time element deletes
+  }, [emailDeleted]);
+
+  // handle delete email
   const emailDeleteHandler = (id) => {
     if (isDeleting) return;
     setIsDeleting(true);
     axios.delete(`/api/contacts.php?del=${id}`).then(() => {
+      setEmailDeleted(emailDeleted + 1);
       setIsDeleting(false);
     });
   };
+
   const sortBy = (sortBy) => {
     const sortContacts = filteredContacts ? filteredContacts : contacts;
+
+    let newContacts;
+
     // sortBy date
     if (sortBy === "date" && dateAsc) {
-      const newContacts = sortContacts.sort(
+      newContacts = sortContacts.sort(
         (a, b) => parseFloat(b.timeStamp) - parseFloat(a.timeStamp)
       );
-      filteredContacts
-        ? setFilteredContacts(newContacts)
-        : setContacts(newContacts);
+      setNewContactsHandler(newContacts);
       setDateAsc(false);
       return;
     } else if (sortBy === "date" && !dateAsc) {
-      const newContacts = sortContacts.sort(
+      newContacts = sortContacts.sort(
         (a, b) => parseFloat(a.timeStamp) - parseFloat(b.timeStamp)
       ); // For ascending sort
-      filteredContacts
-        ? setFilteredContacts(newContacts)
-        : setContacts(newContacts);
+      setNewContactsHandler(newContacts);
       setDateAsc(true);
       return;
     }
+
     // sortBy email
     if (sortBy === "email" && emailAsc) {
-      const newContacts = sortContacts.sort(
+      newContacts = sortContacts.sort(
         (a, b) => (a.email > b.email) - (a.email < b.email)
       );
-      filteredContacts
-        ? setFilteredContacts(newContacts)
-        : setContacts(newContacts);
+      setNewContactsHandler(newContacts);
       setEmailAsc(false);
       return;
     } else if (sortBy === "email" && !emailAsc) {
-      const newContacts = sortContacts.sort(
+      newContacts = sortContacts.sort(
         (a, b) => (a.email < b.email) - (a.email > b.email)
       );
-      filteredContacts
-        ? setFilteredContacts(newContacts)
-        : setContacts(newContacts);
+      setNewContactsHandler(newContacts);
       setEmailAsc(true);
       return;
     }
+  };
+
+  const setNewContactsHandler = (newContacts) => {
+    filteredContacts
+      ? setFilteredContacts(newContacts)
+      : setContacts(newContacts);
   };
 
   const mapFilterButtons = (contacts) => {
@@ -77,11 +86,41 @@ const SubscribersList = () => {
   };
 
   const filterByDomain = (domain) => {
+    // check if email domain match the picked domain
     const newContacts = contacts.filter(
       (contact) => contact.email.split("@")[1].split(".")[0] === domain
     );
     setFilteredContacts(newContacts);
   };
+
+  // convert timestamp to date
+
+  // const timeConverter = (timestamp) => {
+  //   var a = new Date(timestamp * 1000);
+  //   var months = [
+  //     "Jan",
+  //     "Feb",
+  //     "Mar",
+  //     "Apr",
+  //     "May",
+  //     "Jun",
+  //     "Jul",
+  //     "Aug",
+  //     "Sep",
+  //     "Oct",
+  //     "Nov",
+  //     "Dec",
+  //   ];
+  //   var year = a.getFullYear();
+  //   var month = months[a.getMonth()];
+  //   var date = a.getDate();
+  //   var hour = a.getHours();
+  //   var min = a.getMinutes();
+  //   var sec = a.getSeconds();
+  //   var time =
+  //     date + " " + month + " " + year + " " + hour + ":" + min + ":" + sec;
+  //   return time;
+  // };
   return (
     <>
       <div>
@@ -126,6 +165,7 @@ const SubscribersList = () => {
         <thead>
           <th>id</th>
           <th>email</th>
+          <th>date</th>
         </thead>
         <tbody>
           {contacts &&
@@ -135,6 +175,7 @@ const SubscribersList = () => {
                 <tr>
                   <td>{contact.id}</td>
                   <td>{contact.email}</td>
+                  <td>{`${new Date(parseFloat(contact.timeStamp))}`}</td>
                   <td>
                     <button
                       onClick={() => {
@@ -154,6 +195,7 @@ const SubscribersList = () => {
                 <tr>
                   <td>{contact.id}</td>
                   <td>{contact.email}</td>
+                  <td>{`${new Date(parseFloat(contact.timeStamp))}`}</td>
                   <td>
                     <button
                       onClick={() => {

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import App from "./containers/App/App";
 import reportWebVitals from "./reportWebVitals";
@@ -10,9 +10,9 @@ ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Router>
+      <HashRouter>
         <App />
-      </Router>
+      </HashRouter>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")

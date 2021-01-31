@@ -1,4 +1,4 @@
-import SubscribersList from "../components/SubscribersList/SubscribersList";
+import SubscribersList from "../containers/SubscribersList/SubscribersList";
 const Subscribers = () => {
   return <SubscribersList />;
 };
