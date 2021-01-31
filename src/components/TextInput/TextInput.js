@@ -17,6 +17,10 @@ const STextInputWrapper = styled.div`
       opacity: 1;
       fill: ${(props) => props.theme.colors.blue};
     }
+    input {
+      border: 1px solid ${(props) => props.theme.colors.blue};
+      box-shadow: 0px 30px 40px rgba(19, 24, 33, 0.06);
+    }
   }
 `;
 const STextInput = styled.input`
@@ -33,10 +37,6 @@ const STextInput = styled.input`
   &:focus {
     box-shadow: 0px 30px 40px rgba(19, 24, 33, 0.06);
     outline: 0;
-  }
-  &:hover {
-    border: 1px solid ${(props) => props.theme.colors.blue};
-    box-shadow: 0px 30px 40px rgba(19, 24, 33, 0.06);
   }
   @media (max-width: 768px) {
     padding: 19px 18px;
@@ -60,14 +60,17 @@ const SArrowBtn = styled.button`
     opacity: 0.3;
     transition: fill 0.3s ease, opacity 0.3s ease;
   }
-
+  &:disabled {
+    cursor: initial;
+    opacity: 0.3;
+  }
   @media (max-width: 768px) {
     right: 15px;
   }
 `;
 
 const TextInput = (props) => {
-  const { type, name, placeholder, value, handleChange } = props;
+  const { type, name, placeholder, value, handleChange, disabled } = props;
   return (
     <STextInputWrapper>
       <STextInput
@@ -77,7 +80,7 @@ const TextInput = (props) => {
         value={value}
         onChange={handleChange}
       />
-      <SArrowBtn type="submit">
+      <SArrowBtn type="submit" disabled={disabled}>
         <svg
           width="24"
           height="14"
