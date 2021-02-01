@@ -1,8 +1,8 @@
 <?php
 $host = "localhost"; 
-$user = "omarzikr_pineapple"; //root
-$password = "Oitfbsfyb"; 
-$dbname = "omarzikr_pineapple"; //reactdb
+$user = "root"; // omarzikr_pineapple
+$password = ""; // Oitfbsfyb
+$dbname = "reactdb"; // omarzikr_pineapple
 $id = '';
 
 // CREATE TABLE `contacts` (`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,`email` varchar(100) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=latin1;
