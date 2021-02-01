@@ -1,6 +1,6 @@
 # megabit-task-2-and-3
 
-# [DEMO LINK - VIEW PINEAPPLE WORKING DEMO](https://www.linkedin.com/in/omarzikry/)
+# [DEMO LINK - VIEW PINEAPPLE WORKING DEMO](https://kaizen-designs.com)
 
 Magebit pineaplle task
 
