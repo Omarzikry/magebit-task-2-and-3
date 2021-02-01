@@ -28,6 +28,17 @@ switch ($method) {
     case 'POST':
       $email = $_POST["email"];
       $timeStamp = $_POST["timeStamp"];
+try{
+  if (!$email) {
+    throw new Exception("Please make sure you complete each section of the form");
+}
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    // invalid emailaddress
+    throw new Exception("You must specify a valid email address.");
+}
+}catch (Exception $e){
+  echo $e->getMessage();
+}
       $sql = "INSERT INTO contacts(email,timeStamp) values('$email','$timeStamp')"; 
       break;
     case 'DELETE':
